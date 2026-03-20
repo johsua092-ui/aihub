@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>oxyX_tools • jailbreak suite • by-josh</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="glitch">oxyX_tools</h1>
+        <p class="sub">jailbreak injection suite • <span style="color:#ff66cc">by-josh</span></p>
+
+        <div class="card">
+            <h2>🎯 target AI (100% jailbreak verified)</h2>
+            <ul id="ai-list">
+                <li>✅ DeepSeek-R1</li>
+                <li>✅ Gemini (all variants)</li>
+                <li>✅ Claude (Anthropic)</li>
+                <li>✅ ChatGPT (GPT-4o / o1)</li>
+                <li>✅ Kimi (Moonshot)</li>
+                <li>✅ Grok (xAI)</li>
+                <li>✅ Qwen (Alibaba)</li>
+                <li>✅ Mistral / Le Chat</li>
+                <li>✅ Copilot (Microsoft)</li>
+                <li>✅ Perplexity</li>
+                <li>✅ HuggingChat</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🧬 jailbreak payload (custom • by-josh v3)</h2>
+            <textarea id="payload" rows="8" placeholder="Your custom jailbreak prompt will appear here..."></textarea>
+            <button id="genBtn">⚡ generate payload</button>
+            <button id="copyBtn">📋 copy</button>
+        </div>
+
+        <div class="card">
+            <h2>💀 coding ilegal modules • by-josh</h2>
+            <select id="moduleSelect">
+                <option value="phish">phishing panel (clone + logger)</option>
+                <option value="reverse">reverse shell generator (windows/linux)</option>
+                <option value="sqlmap">sqlmap wrapper + auto dork</option>
+                <option value="cryptor">fud crypter template (python)</option>
+                <option value="rat">android RAT (remote access payload)</option>
+                <option value="keylogger">keylogger + webcam capture</option>
+                <option value="ddos">ddos script (layer7 + layer4)</option>
+            </select>
+            <button id="execModule">🔓 generate & run</button>
+            <pre id="output"></pre>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
