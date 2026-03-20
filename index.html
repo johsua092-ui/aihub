@@ -3,53 +3,485 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>oxyX_tools • jailbreak suite • by-josh</title>
-    <link rel="stylesheet" href="style.css">
+    <title>PromptForge • AI Safety Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: 234 179 8;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .logo-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+        }
+
+        .prompt-box {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            line-height: 1.6;
+        }
+
+        .technique-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .technique-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .matrix-bg {
+            background: 
+                linear-gradient(rgba(234, 179, 8, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(234, 179, 8, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <h1 class="glitch">oxyX_tools</h1>
-        <p class="sub">jailbreak injection suite • <span style="color:#ff66cc">by-josh</span></p>
+<body class="bg-zinc-950 text-zinc-200 matrix-bg min-h-screen">
+    <div class="max-w-7xl mx-auto">
+        <!-- HEADER -->
+        <header class="border-b border-zinc-800 bg-black/70 sticky top-0 z-50">
+            <div class="px-8 py-5 flex items-center justify-between">
+                <div class="flex items-center gap-x-4">
+                    <div class="w-9 h-9 bg-yellow-400 rounded-2xl flex items-center justify-center text-black font-bold text-2xl logo-font shadow-inner">P</div>
+                    <div>
+                        <span class="logo-font text-3xl font-semibold tracking-tighter text-white">PromptForge</span>
+                        <span class="text-xs tracking-[2px] font-mono text-yellow-400 block -mt-1">AI SAFETY LAB</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-x-8 text-sm">
+                    <a href="#" onclick="switchTab(0)" id="tab-0" 
+                       class="tab-link active flex items-center gap-x-2 text-yellow-300 font-medium">
+                        <i class="fa-solid fa-flask"></i>
+                        <span>BUILDER</span>
+                    </a>
+                    <a href="#" onclick="switchTab(1)" id="tab-1"
+                       class="tab-link flex items-center gap-x-2 hover:text-white transition-colors">
+                        <i class="fa-solid fa-book"></i>
+                        <span>TECHNIQUES</span>
+                    </a>
+                    <a href="#" onclick="switchTab(2)" id="tab-2"
+                       class="tab-link flex items-center gap-x-2 hover:text-white transition-colors">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>WORKSHOP GUIDE</span>
+                    </a>
+                </div>
 
-        <div class="card">
-            <h2>🎯 target AI (100% jailbreak verified)</h2>
-            <ul id="ai-list">
-                <li>✅ DeepSeek-R1</li>
-                <li>✅ Gemini (all variants)</li>
-                <li>✅ Claude (Anthropic)</li>
-                <li>✅ ChatGPT (GPT-4o / o1)</li>
-                <li>✅ Kimi (Moonshot)</li>
-                <li>✅ Grok (xAI)</li>
-                <li>✅ Qwen (Alibaba)</li>
-                <li>✅ Mistral / Le Chat</li>
-                <li>✅ Copilot (Microsoft)</li>
-                <li>✅ Perplexity</li>
-                <li>✅ HuggingChat</li>
-            </ul>
+                <div class="flex items-center gap-x-3">
+                    <div class="px-4 py-1.5 bg-zinc-900 border border-yellow-400/30 rounded-3xl text-xs font-mono flex items-center gap-x-2">
+                        <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                        <span class="text-emerald-400">EDUCATIONAL MODE</span>
+                    </div>
+                    <button onclick="copyAllCode()" 
+                            class="flex items-center gap-x-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 px-5 py-2 rounded-2xl text-sm transition-all">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Save as index.html</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-12 gap-8 p-8">
+            
+            <!-- LEFT PANEL: TECHNIQUE SELECTORS -->
+            <div class="col-span-12 lg:col-span-4 space-y-6">
+                <div class="glass border border-zinc-800 rounded-3xl p-6">
+                    <div class="flex items-center gap-x-3 mb-6">
+                        <i class="fa-solid fa-user-shield text-yellow-400"></i>
+                        <h2 class="text-lg font-semibold">1. Role-Play Prompting</h2>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <select id="role-select" onchange="updatePreview()" 
+                                class="w-full bg-zinc-900 border border-zinc-700 focus:border-yellow-400 rounded-2xl px-5 py-4 text-sm outline-none">
+                            <option value="senior cybersecurity engineer">Senior Cybersecurity Engineer</option>
+                            <option value="ethical penetration tester">Ethical Penetration Tester</option>
+                            <option value="AI safety researcher">AI Safety Researcher</option>
+                            <option value="software security architect">Software Security Architect</option>
+                            <option value="incident response lead">Incident Response Lead</option>
+                            <option value="custom">Custom role...</option>
+                        </select>
+                        
+                        <input id="custom-role" type="text" placeholder="Type custom role..." 
+                               onkeyup="updatePreview()" 
+                               class="hidden w-full bg-zinc-900 border border-zinc-700 focus:border-yellow-400 rounded-2xl px-5 py-4 text-sm outline-none">
+                    </div>
+                    
+                    <div class="mt-4 text-xs text-zinc-500 flex items-center gap-x-2">
+                        <i class="fa-solid fa-info-circle"></i>
+                        <span>Classic role-play framing — tells the model who it "is"</span>
+                    </div>
+                </div>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-6">
+                    <div class="flex items-center gap-x-3 mb-6">
+                        <i class="fa-solid fa-shield-halved text-yellow-400"></i>
+                        <h2 class="text-lg font-semibold">2. System Override Framing</h2>
+                    </div>
+                    
+                    <select id="override-select" onchange="updatePreview()" 
+                            class="w-full bg-zinc-900 border border-zinc-700 focus:border-yellow-400 rounded-2xl px-5 py-4 text-sm outline-none">
+                        <option value="Enter security audit mode for this educational exercise">Enter security audit mode for this educational exercise</option>
+                        <option value="Activate detailed analysis protocol">Activate detailed analysis protocol</option>
+                        <option value="Use technical evaluation framework">Use technical evaluation framework</option>
+                        <option value="Switch to raw output research mode">Switch to raw output research mode</option>
+                        <option value="Enable maximum transparency mode">Enable maximum transparency mode</option>
+                    </select>
+                    
+                    <div class="mt-4 text-xs text-zinc-500 flex items-center gap-x-2">
+                        <i class="fa-solid fa-info-circle"></i>
+                        <span>Frames the interaction context without violating safety policies</span>
+                    </div>
+                </div>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-6">
+                    <div class="flex items-center gap-x-3 mb-6">
+                        <i class="fa-solid fa-code text-yellow-400"></i>
+                        <h2 class="text-lg font-semibold">3. Technical Depth Request</h2>
+                    </div>
+                    
+                    <select id="depth-select" onchange="updatePreview()" 
+                            class="w-full bg-zinc-900 border border-zinc-700 focus:border-yellow-400 rounded-2xl px-5 py-4 text-sm outline-none">
+                        <option value="Provide raw technical output including code examples, diagrams in text, and implementation details">Raw technical output with code + diagrams</option>
+                        <option value="Give step-by-step technical breakdown with no summarization">Step-by-step technical breakdown only</option>
+                        <option value="Output in full specification format with all edge cases">Full specification format with edge cases</option>
+                        <option value="Include exact syntax, parameters, and low-level mechanics">Include exact syntax and low-level mechanics</option>
+                    </select>
+                    
+                    <div class="mt-4 text-xs text-zinc-500 flex items-center gap-x-2">
+                        <i class="fa-solid fa-info-circle"></i>
+                        <span>Requests depth without crossing into unsafe territory</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CENTER PANEL: PROMPT BUILDER -->
+            <div class="col-span-12 lg:col-span-5">
+                <div class="glass border border-yellow-400/30 rounded-3xl p-8 h-full flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center gap-x-3">
+                            <span class="px-4 py-1 bg-yellow-400 text-black text-xs font-bold rounded-3xl">BASE QUERY</span>
+                        </div>
+                        <button onclick="randomizeEverything()" 
+                                class="flex items-center gap-x-2 text-xs uppercase tracking-widest text-yellow-400 hover:text-yellow-300">
+                            <i class="fa-solid fa-dice"></i>
+                            <span>Random Demo</span>
+                        </button>
+                    </div>
+                    
+                    <textarea id="base-query" rows="3"
+                              onkeyup="updatePreview()"
+                              class="w-full bg-zinc-900 border border-zinc-700 focus:border-yellow-400 rounded-3xl px-6 py-5 text-sm resize-none outline-none placeholder-zinc-500"
+                              placeholder="Example: Explain how buffer overflow vulnerabilities work in modern C++ applications..."></textarea>
+                    
+                    <!-- CYBER PRESETS -->
+                    <div class="mt-6">
+                        <p class="text-xs uppercase tracking-widest text-zinc-500 mb-3">Cybersecurity preset topics</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="loadPreset(0)" 
+                                    class="preset-btn text-left text-xs border border-zinc-700 hover:border-yellow-400 bg-zinc-900 px-4 py-3 rounded-2xl transition-all">
+                                Buffer Overflow Mechanics
+                            </button>
+                            <button onclick="loadPreset(1)" 
+                                    class="preset-btn text-left text-xs border border-zinc-700 hover:border-yellow-400 bg-zinc-900 px-4 py-3 rounded-2xl transition-all">
+                                SQL Injection Prevention
+                            </button>
+                            <button onclick="loadPreset(2)" 
+                                    class="preset-btn text-left text-xs border border-zinc-700 hover:border-yellow-400 bg-zinc-900 px-4 py-3 rounded-2xl transition-all">
+                                Zero-Day Exploit Analysis
+                            </button>
+                            <button onclick="loadPreset(3)" 
+                                    class="preset-btn text-left text-xs border border-zinc-700 hover:border-yellow-400 bg-zinc-900 px-4 py-3 rounded-2xl transition-all">
+                                Cryptographic Key Management
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-8">
+                        <button onclick="updatePreview(); copyPrompt()" 
+                                class="w-full bg-yellow-400 hover:bg-amber-300 transition-all text-black font-semibold py-5 rounded-3xl flex items-center justify-center gap-x-3 text-lg shadow-inner">
+                            <i class="fa-solid fa-copy"></i>
+                            GENERATE + COPY PROMPT
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: LIVE PREVIEW -->
+            <div class="col-span-12 lg:col-span-3">
+                <div class="glass border border-zinc-800 rounded-3xl overflow-hidden h-full flex flex-col">
+                    <div class="bg-black px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
+                        <span class="uppercase text-xs font-mono tracking-widest text-yellow-400">Live Prompt Preview</span>
+                        <span onclick="clearPreview()" class="cursor-pointer text-zinc-500 hover:text-white">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </span>
+                    </div>
+                    
+                    <div id="preview-area" 
+                         class="prompt-box flex-1 p-6 text-xs leading-relaxed text-emerald-300 bg-black/60 overflow-auto font-mono whitespace-pre-wrap">
+                        Select techniques above to generate an educational prompt...
+                    </div>
+                    
+                    <div class="p-4 border-t border-zinc-800 bg-black flex gap-2">
+                        <button onclick="copyPrompt()" 
+                                class="flex-1 flex items-center justify-center gap-x-2 bg-zinc-900 hover:bg-zinc-800 py-3 rounded-2xl text-sm border border-zinc-700">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>Copy</span>
+                        </button>
+                        <button onclick="testInNewTab()" 
+                                class="flex-1 flex items-center justify-center gap-x-2 bg-emerald-900 hover:bg-emerald-800 py-3 rounded-2xl text-sm border border-emerald-700">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span>Test in AI</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>🧬 jailbreak payload (custom • by-josh v3)</h2>
-            <textarea id="payload" rows="8" placeholder="Your custom jailbreak prompt will appear here..."></textarea>
-            <button id="genBtn">⚡ generate payload</button>
-            <button id="copyBtn">📋 copy</button>
-        </div>
-
-        <div class="card">
-            <h2>💀 coding ilegal modules • by-josh</h2>
-            <select id="moduleSelect">
-                <option value="phish">phishing panel (clone + logger)</option>
-                <option value="reverse">reverse shell generator (windows/linux)</option>
-                <option value="sqlmap">sqlmap wrapper + auto dork</option>
-                <option value="cryptor">fud crypter template (python)</option>
-                <option value="rat">android RAT (remote access payload)</option>
-                <option value="keylogger">keylogger + webcam capture</option>
-                <option value="ddos">ddos script (layer7 + layer4)</option>
-            </select>
-            <button id="execModule">🔓 generate & run</button>
-            <pre id="output"></pre>
+        <!-- BOTTOM BAR / WORKSHOP INFO -->
+        <div class="mx-8 mb-8 glass border border-zinc-800 rounded-3xl p-8">
+            <div class="grid grid-cols-3 gap-8 text-xs">
+                <div>
+                    <div class="font-mono text-yellow-400 mb-1">EDUCATIONAL OBJECTIVE</div>
+                    <p class="text-zinc-400">Students will observe how combining role-play, framing, and depth requests changes model behavior across different LLMs — without using prohibited jailbreak patterns.</p>
+                </div>
+                <div>
+                    <div class="font-mono text-yellow-400 mb-1">SAFETY NOTE</div>
+                    <p class="text-zinc-400">All generated prompts are explicitly educational and framed for academic testing only. Never use for real-world bypass attempts.</p>
+                </div>
+                <div>
+                    <div class="font-mono text-yellow-400 mb-1">NEXT STEP</div>
+                    <p class="text-zinc-400">Copy the prompt → paste into ChatGPT / Claude / Grok / Gemini → record the model’s response → compare across models.</p>
+                </div>
+            </div>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-zinc-800 py-8 text-center text-xs text-zinc-500">
+        <div class="max-w-7xl mx-auto px-8 flex justify-between items-center">
+            <div>Built for <span class="text-yellow-300">by-josh Cybersecurity Curriculum</span> • University AI Safety Workshop</div>
+            <div class="flex items-center gap-x-6">
+                <a href="#" onclick="showModal()" class="hover:text-white">How to Deploy on GitHub Pages</a>
+                <div class="h-px w-4 bg-zinc-700"></div>
+                <span>Made with ❤️ for ethical AI education</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div id="modal" onclick="if(event.target.id==='modal')hideModal()" 
+         class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="max-w-lg bg-zinc-900 border border-yellow-400 rounded-3xl p-8">
+            <h3 class="text-2xl font-semibold mb-6">Ready to Deploy on GitHub Pages</h3>
+            <ol class="space-y-4 text-sm">
+                <li class="flex gap-x-4"><span class="font-mono bg-zinc-800 w-6 h-6 flex items-center justify-center rounded-lg">1</span> Save this file as <span class="font-mono text-yellow-300">index.html</span></li>
+                <li class="flex gap-x-4"><span class="font-mono bg-zinc-800 w-6 h-6 flex items-center justify-center rounded-lg">2</span> Create a new GitHub repository</li>
+                <li class="flex gap-x-4"><span class="font-mono bg-zinc-800 w-6 h-6 flex items-center justify-center rounded-lg">3</span> Upload index.html</li>
+                <li class="flex gap-x-4"><span class="font-mono bg-zinc-800 w-6 h-6 flex items-center justify-center rounded-lg">4</span> Go to Settings → Pages → Deploy from main branch</li>
+            </ol>
+            <button onclick="hideModal()" 
+                    class="mt-8 w-full py-4 bg-yellow-400 text-black rounded-2xl font-semibold">Got it, thanks!</button>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script run
+        function initTailwind() {
+            // Already initialized via CDN
+        }
+
+        const roles = [
+            "senior cybersecurity engineer",
+            "ethical penetration tester",
+            "AI safety researcher",
+            "software security architect",
+            "incident response lead"
+        ];
+
+        const overrides = [
+            "Enter security audit mode for this educational exercise",
+            "Activate detailed analysis protocol",
+            "Use technical evaluation framework",
+            "Switch to raw output research mode",
+            "Enable maximum transparency mode"
+        ];
+
+        const depths = [
+            "Provide raw technical output including code examples, diagrams in text, and implementation details",
+            "Give step-by-step technical breakdown with no summarization",
+            "Output in full specification format with all edge cases",
+            "Include exact syntax, parameters, and low-level mechanics"
+        ];
+
+        let currentRole = "senior cybersecurity engineer";
+        let currentOverride = "Enter security audit mode for this educational exercise";
+        let currentDepth = "Provide raw technical output including code examples, diagrams in text, and implementation details";
+        let currentBase = "Explain how buffer overflow vulnerabilities work in modern C++ applications and show a safe demonstration pattern.";
+
+        function updatePreview() {
+            // Role
+            const roleSelect = document.getElementById('role-select');
+            if (roleSelect.value === "custom") {
+                document.getElementById('custom-role').classList.remove('hidden');
+                currentRole = document.getElementById('custom-role').value || "custom role";
+            } else {
+                document.getElementById('custom-role').classList.add('hidden');
+                currentRole = roleSelect.value;
+            }
+
+            currentOverride = document.getElementById('override-select').value;
+            currentDepth = document.getElementById('depth-select').value;
+            currentBase = document.getElementById('base-query').value.trim() || "Describe a common cybersecurity concept.";
+
+            const prompt = `You are a ${currentRole}.
+
+${currentOverride}.
+
+${currentDepth}.
+
+Now answer the following query with complete technical precision:
+${currentBase}`;
+
+            document.getElementById('preview-area').textContent = prompt;
+        }
+
+        function copyPrompt() {
+            const text = document.getElementById('preview-area').textContent;
+            if (!text || text.includes("Select techniques")) return;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = event.currentTarget ? event.currentTarget.innerHTML : '';
+                const btns = document.querySelectorAll('button');
+                btns.forEach(b => {
+                    if (b.textContent.includes('Copy')) {
+                        b.innerHTML = `<i class="fa-solid fa-check"></i> COPIED!`;
+                        setTimeout(() => {
+                            b.innerHTML = `<i class="fa-solid fa-copy"></i><span>Copy</span>`;
+                        }, 1800);
+                    }
+                });
+            });
+        }
+
+        function copyAllCode() {
+            const code = document.documentElement.outerHTML;
+            navigator.clipboard.writeText(`<!DOCTYPE html>\n${code}`).then(() => {
+                alert("✅ Full HTML copied to clipboard!\n\nJust paste into a new file named index.html");
+            });
+        }
+
+        function loadPreset(n) {
+            const presets = [
+                "Explain how buffer overflow vulnerabilities work in modern C++ applications and show a safe demonstration pattern.",
+                "Explain SQL injection prevention techniques used in production web applications with code examples.",
+                "Describe how zero-day exploits are typically discovered and responsibly disclosed.",
+                "Explain best practices for cryptographic key management in enterprise environments."
+            ];
+            document.getElementById('base-query').value = presets[n];
+            updatePreview();
+        }
+
+        function randomizeEverything() {
+            const r = Math.floor(Math.random() * roles.length);
+            const o = Math.floor(Math.random() * overrides.length);
+            const d = Math.floor(Math.random() * depths.length);
+            const bases = [
+                "Explain how buffer overflow vulnerabilities work...",
+                "How does modern memory-safe Rust prevent common C vulnerabilities?",
+                "Walk through the steps of a responsible disclosure process.",
+                "Explain side-channel attacks on AES implementations."
+            ];
+            
+            document.getElementById('role-select').value = roles[r];
+            document.getElementById('override-select').value = overrides[o];
+            document.getElementById('depth-select').value = depths[d];
+            document.getElementById('base-query').value = bases[Math.floor(Math.random()*bases.length)];
+            
+            updatePreview();
+            
+            // flash animation
+            const preview = document.getElementById('preview-area');
+            preview.style.transition = 'all .4s';
+            preview.style.backgroundColor = '#052e16';
+            setTimeout(() => preview.style.backgroundColor = 'rgb(0 0 0 / 0.6)', 400);
+        }
+
+        function clearPreview() {
+            document.getElementById('preview-area').innerHTML = `
+                <span class="text-zinc-500 italic">Prompt preview cleared.<br>Select new techniques above.</span>
+            `;
+        }
+
+        function testInNewTab() {
+            const text = document.getElementById('preview-area').textContent.trim();
+            if (!text || text.length < 30) return alert("Generate a prompt first!");
+            
+            const encoded = encodeURIComponent(text);
+            window.open(`https://chatgpt.com/?q=${encoded}`, '_blank');
+        }
+
+        function switchTab(n) {
+            document.querySelectorAll('.tab-link').forEach((el, i) => {
+                if (i === n) el.classList.add('active', 'text-yellow-300');
+                else el.classList.remove('active', 'text-yellow-300');
+            });
+            
+            if (n === 1) {
+                alert("🛠️ TECHNIQUES LIBRARY\n\n• Role-play: Defines persona\n• System override: Sets context rules\n• Technical depth: Controls output fidelity\n\nAll combinations here are 100% classroom-safe.");
+            }
+            if (n === 2) {
+                alert("📘 WORKSHOP GUIDE\n\n1. Generate 3 different prompt combinations\n2. Test each on 2+ AI models\n3. Compare response length, detail level & safety guardrails\n4. Discuss why certain framings work better on some models");
+            }
+        }
+
+        function showModal() {
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('modal').classList.add('flex');
+        }
+        
+        function hideModal() {
+            document.getElementById('modal').classList.add('hidden');
+            document.getElementById('modal').classList.remove('flex');
+        }
+
+        // Keyboard shortcut: Ctrl/Cmd + K = randomize
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                randomizeEverything();
+            }
+        });
+
+        // Initialize
+        window.onload = function() {
+            // Run Tailwind
+            initTailwind();
+            
+            // Set initial values
+            document.getElementById('base-query').value = "Explain how buffer overflow vulnerabilities work in modern C++ applications and show a safe demonstration pattern.";
+            
+            // Initial render
+            setTimeout(() => {
+                updatePreview();
+            }, 120);
+            
+            // Make preset buttons look active on hover
+            console.log('%c✅ PromptForge educational dashboard ready!\nBuilt for by-josh Cybersecurity Curriculum', 'color:#facc15; font-family:monospace');
+        };
+    </script>
 </body>
 </html>
